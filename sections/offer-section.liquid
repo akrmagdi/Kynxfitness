@@ -1,0 +1,202 @@
+{% schema %}
+{
+  "name": "Custom Product Section",
+  "settings": [
+    {
+      "type": "number",
+      "id": "product_title_font_size",
+      "label": "Product Title Font Size",
+      "default": 2
+    },
+    {
+      "type": "number",
+      "id": "product_description_font_size",
+      "label": "Product Description Font Size",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "accordion_title_font_size",
+      "label": "Accordion Title Font Size",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "badge_font_size",
+      "label": "Badge Font Size",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "price_font_size",
+      "label": "Price Font Size",
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_title",
+      "name": "Product Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title_text",
+          "label": "Title Text"
+        }
+      ]
+    },
+    {
+      "type": "product_description",
+      "name": "Product Description",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description_text",
+          "label": "Description Text"
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Accordion Title"
+        },
+        {
+          "type": "richtext",
+          "id": "accordion_content",
+          "label": "Accordion Content"
+        },
+        {
+          "type": "color",
+          "id": "accordion_bg_color",
+          "label": "Accordion Background Color"
+        },
+        {
+          "type": "color",
+          "id": "icon_bg_color",
+          "label": "Icon Background Color"
+        }
+      ]
+    },
+    {
+      "type": "buy_button",
+      "name": "Buy Button",
+      "settings": [
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Subscribe Now"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="product-section-wrapper">
+  <div class="product-info">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'product_title' %}
+          <h1 class="product-title" style="font-size: {{ section.settings.product_title_font_size }}rem;">
+            {{ block.settings.title_text }}
+          </h1>
+        {% when 'product_description' %}
+          <div class="product-description" style="font-size: {{ section.settings.product_description_font_size }}rem;">
+            {{ block.settings.description_text }}
+          </div>
+        {% when 'accordion' %}
+          <div class="accordion" style="background-color: {{ block.settings.accordion_bg_color }};">
+            <div class="accordion-header" style="font-size: {{ section.settings.accordion_title_font_size }}rem;">
+              {{ block.settings.accordion_title }}
+              <span class="accordion-icon" style="background-color: {{ block.settings.icon_bg_color }};">+</span>
+            </div>
+            <div class="accordion-content">
+              {{ block.settings.accordion_content }}
+            </div>
+          </div>
+        {% when 'buy_button' %}
+          <div class="buy-button-wrapper">
+            <a href="{{ block.settings.button_link | default: 'cart/add?quantity=1&id=' | append: product.variants.first.id }}" 
+               class="buy-button" 
+               style="font-size: {{ section.settings.button_font_size }}rem;">
+              {{ block.settings.button_text }}
+            </a>
+            <div class="price-badge" style="font-size: {{ section.settings.badge_font_size }}rem;">
+              <span class="discount-badge">{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round }}% off</span>
+              <span class="product-price" style="font-size: {{ section.settings.price_font_size }}rem;">
+                {{ product.price | money }}
+              </span>
+            </div>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+
+
+<style>
+  // Swiper initialization
+var swiper = new Swiper('.swiper-container', {
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+  slidesPerView: 1
+});
+
+// Accordion functionality
+document.querySelectorAll('.accordion-header').forEach((header) => {
+  header.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    const icon = this.querySelector('.accordion-icon');
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    icon.textContent = icon.textContent === '+' ? '-' : '+';
+  });
+});
+
+</style>
+<script>
+  // Swiper initialization
+var swiper = new Swiper('.swiper-container', {
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+  slidesPerView: 1
+});
+
+// Accordion functionality
+document.querySelectorAll('.accordion-header').forEach((header) => {
+  header.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    const icon = this.querySelector('.accordion-icon');
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    icon.textContent = icon.textContent === '+' ? '-' : '+';
+  });
+});
+
+</script>

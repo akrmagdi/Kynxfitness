@@ -1,0 +1,110 @@
+{% schema %}
+{
+  "name": "Review Image Slider",
+  "settings": [
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed (ms)",
+      "default": 3000,
+      "min": 1000,
+      "max": 9000,
+      "step": 500
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image Height (px)",
+      "default": 200,
+      "min": 50,
+      "max": 400,
+      "step": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Review Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Upload Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review Image Slider",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- Swiper Container -->
+<div class="section-{{ section.id }}">
+  <div id="review-image-slider-{{ section.id }}" class="swiper-container">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        {% if block.settings.image %}
+          <div class="swiper-slide review-img">
+            <img src="{{ block.settings.image | img_url: '720x' }}" alt="Review Image" style="height: {{ section.settings.image_height }}px;" />
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    new Swiper('#review-image-slider-{{ section.id }}', {
+      slidesPerView: 1, // Adjust based on your desired number of visible slides
+      spaceBetween: 16, // Spacing between slides
+      loop: true,
+      autoplay: {
+        delay: {{ section.settings.autoplay_speed }},
+        disableOnInteraction: false,
+      },
+      speed: 600,
+      breakpoints: {
+        768: {
+          slidesPerView: 3, // 3 slides visible on tablet and desktop
+          spaceBetween: 16,
+        },
+        0: {
+          slidesPerView: 1, // 1 slide visible on mobile
+          spaceBetween: 8,
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .section-{{ section.id }} .swiper-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .section-{{ section.id }} .swiper-wrapper {
+    display: flex; /* Ensure slides are arranged horizontally */
+  }
+
+  .section-{{ section.id }} .swiper-slide {
+    flex-shrink: 0; /* Prevent slides from shrinking */
+    width: auto; /* Allow Swiper to manage the width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .section-{{ section.id }} .swiper-slide img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+</style>

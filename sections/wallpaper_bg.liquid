@@ -1,0 +1,53 @@
+{% schema %}
+{
+  "name": "Wallpaper Background",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image_desktop",
+      "label": "Desktop Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile Background Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "bg-wallpaper"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="Bg-wallpaper">
+  <!-- Your content here -->
+</div>
+
+<style>
+  .Bg-wallpaper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    z-index: -1;
+  }
+
+  /* Desktop Background */
+  @media (min-width: 768px) {
+    .Bg-wallpaper {
+      background-image: url('{{ section.settings.background_image_desktop | img_url: 'master' }}');
+    }
+  }
+
+  /* Mobile Background */
+  @media (max-width: 767px) {
+    .Bg-wallpaper {
+      background-image: url('{{ section.settings.background_image_mobile | img_url: 'master' }}');
+    }
+  }
+</style>

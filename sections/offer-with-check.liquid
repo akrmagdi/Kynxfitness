@@ -1,0 +1,404 @@
+{% schema %}
+{
+  "name": "Offer Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height (in VH)",
+      "default": 50,
+      "min": 30,
+      "max": 100,
+      "step": 1
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "Section Background Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo-block",
+      "name": "Logo Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "range",
+          "id": "logo_image_width",
+          "label": "Logo Image Width",
+          "default": 100,
+          "min": 50,
+          "max": 300,
+          "step": 10
+        },
+        {
+          "type": "text",
+          "id": "logo_title",
+          "label": "Logo Title",
+          "default": "Daily Basics"
+        },
+        {
+          "type": "text",
+          "id": "logo_subtitle",
+          "label": "Logo Subtitle",
+          "default": "30 Day Mobility Challenge"
+        },
+        {
+          "type": "product",
+          "id": "main_product",
+          "label": "Main Product"
+        },
+        {
+          "type": "product",
+          "id": "checked_product",
+          "label": "Checked Product"
+        },
+        {
+          "type": "text",
+          "id": "checkbox_text",
+          "label": "Checkbox Text",
+          "default": "Add this product as well"
+        },
+        {
+          "type": "range",
+          "id": "logo_title_size",
+          "label": "Logo Title Font Size",
+          "default": 16,
+          "min": 12,
+          "max": 30,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "logo_subtitle_size",
+          "label": "Logo Subtitle Font Size",
+          "default": 14,
+          "min": 12,
+          "max": 30,
+          "step": 1
+        },
+        {
+          "type": "text",
+          "id": "offer_title",
+          "label": "Offer Title",
+          "default": "OFFER"
+        },
+        {
+          "type": "richtext",
+          "id": "offer_description",
+          "label": "Offer Description"
+        },
+        {
+          "type": "text",
+          "id": "offer_button",
+          "label": "Offer Button Text",
+          "default": "GET NOW"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Offer Section & check box",
+      "category": "Sections"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="information-section-{{ section.id }}"
+     style="
+        background-color: {{ settings.section_background_color }};
+        {% if settings.background_image %}
+        background-image: url({{ settings.background_image | img_url: 'master' }});
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        {% endif %}
+        height: {{ settings.section_height }}vh;">
+  <div class="info-section-wrapper">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'logo-block' %}
+          <div class="info-logo">
+            <div class="logo-block">
+              <img src="{{ block.settings.logo_image | img_url: 'master' }}" alt="Logo" style="width: {{ block.settings.logo_image_width }}px;">
+              <div class="info-titles">
+                <p style="font-size: {{ block.settings.logo_title_size }}px;">{{ block.settings.logo_title }}</p>
+                <h5 style="font-size: {{ block.settings.logo_subtitle_size }}px;">{{ block.settings.logo_subtitle }}</h5>
+              </div>
+              <div class="offer-box">
+
+                <h5>{{ block.settings.offer_title }}</h5>
+                <p>{{ block.settings.offer_description }}</p>
+                                <label>
+                  <input type="checkbox" id="add-checked-product">
+                  {{ block.settings.checkbox_text }}
+                </label>
+  <button 
+    class="info-box-button" 
+    onclick="handleAddToCart('{{ all_products[block.settings.main_product].variants.first.id }}', '{{ all_products[block.settings.checked_product].variants.first.id }}')">
+    {{ block.settings.offer_button }}
+  </button>
+              </div>
+            </div>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+function handleAddToCart(mainProductId, checkedProductId) {
+  // Get the state of the checkbox
+  const checkbox = document.getElementById('add-checked-product');
+  const isChecked = checkbox.checked; // Determine if the checkbox is checked
+
+  const items = [];
+
+  // If the checkbox is checked, only add the checked product
+  if (isChecked) {
+    if (checkedProductId && checkedProductId !== 'undefined') {
+      console.log('Checkbox is checked. Adding checked product only.');
+      items.push({ id: checkedProductId, quantity: 1 }); // Add checked product
+    } else {
+      alert('Checked product is not configured properly.');
+      return;
+    }
+  } 
+  // If the checkbox is unchecked, add the main product
+  else {
+    if (mainProductId && mainProductId !== 'undefined') {
+      console.log('Checkbox is unchecked. Adding main product only.');
+      items.push({ id: mainProductId, quantity: 1 }); // Add main product
+    } else {
+      alert('Main product is not configured properly.');
+      return;
+    }
+  }
+
+  // Debugging: Log the payload
+  console.log('Payload being sent to /cart/add.js:', JSON.stringify({ items }, null, 2));
+
+  // Perform the fetch request to add to cart
+  fetch('/cart/add.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ items }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to add item to the cart: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then(() => {
+      window.location.href = '/checkout';
+    })
+    .catch((error) => {
+      console.error('Error adding to cart:', error);
+      alert('There was an error adding the product to the cart. Please try again.');
+    });
+}
+</script>
+
+<style>
+
+  
+  /* Container styles */
+  .information-section-{{ section.id }} {
+    background-size: cover;
+  }
+
+  .info-section-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3em;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .info-logo {
+    display: flex;
+    gap: 20px;
+  }
+
+  .logo-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .logo-block img {
+    max-width: 100px;
+  }
+
+  .info-titles {
+    margin: 0;
+    flex-grow: 1;
+    padding: 0.25rem;
+  }
+
+  .offer-box {
+    background: #454545;
+    padding: 2rem 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+    max-height: fit-content;
+  }
+
+  .info-box-button,
+  .mib-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #0d67f7;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    width: fit-content;
+  }
+
+  .icon-box {
+    background: white;
+    border-radius: 25px;
+  }
+
+  .image-box img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 1.5rem;
+  }
+
+  .image-info-button-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+  .image-info-button-box img {
+    width: 100%;
+    border-radius: 10px;
+    height: 25vw;
+    object-fit: cover;
+    object-position: bottom;
+}
+
+  .mib-titles h5 {
+    margin: 0;
+  }
+
+  .info-titles h5 {
+  font-size: 3rem !important;
+  margin: 0px;
+  line-height: 3rem;
+}
+
+  .info-titles p {
+  color: #0d67f7;
+  font-weight: 600;
+  font-size: 1.5rem !important;
+}
+
+  .offer-box{{ section.id }} h5 {
+  font-size: 3rem;
+  color: white;
+  padding: 0px;
+  margin: 0;
+}
+.offer-box {
+  color: white;
+  line-height: 2rem;
+}
+.icon-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+information-section-{{ section.id }} svg {
+  fill: black;
+  padding: 5px;
+}
+.info-box-button {
+  border-radius: 3rem;
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+}
+.mib-button {
+  border-radius: 3rem;
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+}
+  .info-titles h5 {
+  font-size: 3rem !important;
+  margin: 0px !important;
+  line-height: 3rem !important;
+}
+  .info-titles p {
+  color: #0d67f7 !important;
+  font-weight: 600 !important;
+  font-size: 1.5rem !important;
+  }
+  .offer-box h5 {
+  font-size: 3rem !important;
+  color: white !important;
+  padding: 0px !important;
+  margin: 0 !important;
+  }
+
+ 
+  .mib-titles {
+    display: flex;
+    flex-direction: column;
+  }
+
+    @media screen and (max-width: 768px) {
+  .info-section-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2em;
+  }
+  .image-box  {
+    display: none !important;
+  }
+  .image-info-button-box img {
+    height: 50vw;
+  }
+  .logo-block img {
+    width: 75px !important;
+  }
+  .logo-block {
+    gap: 8px !important;
+  }
+  .mib-button {
+    margin-left: auto !important;
+  }
+}
+.mib-titles P {
+  color: black;
+}
+p {
+  padding: 0;
+}
+</style>
+
