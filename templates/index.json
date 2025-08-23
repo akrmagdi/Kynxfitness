@@ -120,6 +120,9 @@
         "logo_9dNfFU",
         "logo_HqxC9c"
       ],
+      "custom_css": [
+        ".section-spacing {padding: 0;}"
+      ],
       "name": "t:sections.logo_list.presets.logo_list.name",
       "settings": {
         "color_scheme": "scheme-3",
