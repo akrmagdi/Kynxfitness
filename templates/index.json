@@ -54,6 +54,18 @@
         "remove_vertical_spacing": false
       }
     },
+    "custom_liquid_pyBx3z": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom_liquid.presets.custom_liquid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": true,
+        "remove_horizontal_spacing": true,
+        "liquid": "<section class=\"kx-value\">\n  <div class=\"kx-value__wrap\">\n    <div class=\"kx-badge\"><i class=\"fas fa-credit-card\"></i> One-time payment</div>\n    <div class=\"kx-badge\"><i class=\"fas fa-infinity\"></i> Lifetime access</div>\n    <div class=\"kx-badge\"><i class=\"fas fa-sync-alt\"></i> Free updates forever</div>\n    <div class=\"kx-badge\"><i class=\"fas fa-mobile-alt\"></i> Works on any device</div>\n  </div>\n\n  <style>\n    .kx-value {\n      background: #0f1012;\n      color: #eaf2f7;\n      padding: 14px 12px;\n      border-top: 1px solid #1b1d22;\n      border-bottom: 1px solid #1b1d22;\n    }\n    .kx-value__wrap {\n      max-width: 1160px;\n      margin: 0 auto;\n      display: flex;\n      gap: 10px;\n      flex-wrap: wrap;\n      justify-content: center;\n    }\n    .kx-badge {\n      background: #111a22;\n      border: 1px solid #1f2a36;\n      color: #cfe0ea;\n      padding: 8px 14px;\n      border-radius: 999px;\n      font-weight: 700;\n      font-size: 13px;\n      display: flex;\n      align-items: center;\n      gap: 6px;\n      white-space: nowrap;\n    }\n    /* Mobile optimization */\n    @media (max-width: 600px) {\n      .kx-value__wrap {\n        flex-direction: column;\n        align-items: center;\n      }\n      .kx-badge {\n        width: 100%;\n        justify-content: center;\n        font-size: 14px;\n      }\n    }\n  </style>\n  <!-- Make sure Font Awesome is loaded -->\n  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css\">\n</section>",
+        "text_alignment": "center"
+      }
+    },
     "custom_liquid_EfwTH9": {
       "type": "custom-liquid",
       "name": "t:sections.custom_liquid.presets.custom_liquid.name",
@@ -194,6 +206,7 @@
   },
   "order": [
     "rich_text_RAfxhA",
+    "custom_liquid_pyBx3z",
     "custom_liquid_EfwTH9",
     "logo_list_RWQDC7",
     "custom_liquid_Fx47NJ",
