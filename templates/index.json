@@ -121,7 +121,8 @@
         "logo_HqxC9c"
       ],
       "custom_css": [
-        ".section-spacing,.logo-list__item {padding: 0.25rem;}"
+        ".section-spacing,.logo-list__item {padding: 0.25rem;}",
+        ".logo-list {display: flex; gap: 1rem;}"
       ],
       "name": "t:sections.logo_list.presets.logo_list.name",
       "settings": {
