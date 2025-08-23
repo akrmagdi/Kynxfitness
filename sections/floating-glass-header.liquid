@@ -1,0 +1,147 @@
+{% comment %}
+  Minimal Floating Glass Header (no HTML/CSS changes)
+  - Only CTA label + product selection + qty + return_to (+ optional direct-to-checkout)
+{% endcomment %}
+
+{%- assign cta_label = section.settings.btn_label | default: 'GET ACCESS' -%}
+{%- assign cta_href = '/cart/41969622876254:1?return_to=/checkout' -%} {# fallback = your original link #}
+{%- assign qty = section.settings.quantity | default: 1 | abs -%}
+{%- assign return_to_path = section.settings.return_to | default: '/checkout' -%}
+
+{%- if section.settings.product != blank -%}
+  {%- assign v = section.settings.product.selected_or_first_available_variant -%}
+  {%- if v -%}
+    {%- assign base = '/cart/' | append: v.id | append: ':' | append: qty -%}
+    {%- if section.settings.go_checkout -%}
+      {%- assign cta_href = base | append: '?return_to=' | append: return_to_path -%}
+    {%- else -%}
+      {%- assign cta_href = base | append: '?return_to=' | append: return_to_path -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+
+<!-- Floating Glass Header -->
+<header class="custom-header">
+  <div class="custom-header__inner">
+    <a class="custom-header__logo" href="/">
+      <h1>KYNX FITNESS</h1>
+    </a>
+
+    <a href="{{ cta_href }}"
+       class="custom-header__btn" aria-label="{{ cta_label | escape }}">
+      {{ cta_label }}
+    </a>
+  </div>
+</header>
+
+<div class="custom-header__spacer" aria-hidden="true"></div>
+
+<style>
+  .custom-header {
+    --header-height: 64px;
+    --glass-bg: rgba(23, 23, 23, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --btn-bg: #0ea5e9;
+    --btn-bg-hover: #0891b2;
+    --btn-text: #ffffff;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    z-index: 9999;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border-bottom: 1px solid var(--glass-border);
+    font-family: inherit;
+  }
+
+  .custom-header__inner {
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .custom-header__logo h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+
+  .custom-header__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid rgba(14, 165, 233, 0.35);
+    box-shadow: 0 2px 6px rgba(14, 165, 233, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .custom-header__btn:hover {
+    background: var(--btn-bg-hover);
+    box-shadow: 0 4px 10px rgba(8, 145, 178, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .custom-header__btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(8, 145, 178, 0.2);
+  }
+
+  .custom-header__spacer {
+    height: var(--header-height);
+  }
+
+  /* Mobile tweaks */
+  @media (max-width: 480px) {
+    :root {
+      --header-height: 52px;
+    }
+    .custom-header__logo h1 {
+      font-size: 15px; /* smaller logo */
+    }
+    .custom-header__btn {
+      padding: 5px 10px;
+      font-size: 11px; /* smaller button text */
+      border-radius: 6px;
+    }
+    .custom-header__inner {
+      gap: 6px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Floating glass",
+  "settings": [
+    { "type": "text", "id": "btn_label", "label": "CTA text", "default": "GET ACCESS" },
+    { "type": "product", "id": "product", "label": "Product for CTA (uses first available variant)" },
+    { "type": "range", "id": "quantity", "label": "Quantity", "min": 1, "max": 20, "step": 1, "default": 1 },
+    { "type": "checkbox", "id": "go_checkout", "label": "Send to checkout", "default": true },
+    { "type": "text", "id": "return_to", "label": "Return to path", "default": "/checkout" }
+  ],
+  "presets": [
+    { "name": "Floating glass header (minimal)" }
+  ]
+}
+{% endschema %}
