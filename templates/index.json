@@ -224,6 +224,34 @@
         "text_alignment": "start"
       }
     },
+    "custom_liquid_BnKDeC": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom_liquid.presets.custom_liquid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "liquid": "<!-- Programs media rail -->\n<section class=\"mv\">\n  <div class=\"mv-head\">\n  </div>\n\n  <!-- Track (scrolls on mobile, becomes grid on desktop) -->\n  <div class=\"mv-viewport\">\n    <div class=\"mv-track\" id=\"mvTrack\">\n      <!-- CARD 1 (image) -->\n      <figure class=\"mv-card\">\n        <img loading=\"lazy\" src=\"https://images.unsplash.com/photo-1594737625785-c6683fc9b1b2?q=80&w=1600&auto=format&fit=crop\"\n             alt=\"Strength mobility session\">\n      </figure>\n\n      <!-- CARD 2 (video) -->\n      <figure class=\"mv-card\">\n        <video class=\"mv-video\" playsinline muted loop preload=\"metadata\" poster=\"https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=1600&auto=format&fit=crop\">\n          <source src=\"https://cdn.coverr.co/videos/coverr-stretching-in-the-gym-5914/1080p.mp4\" type=\"video/mp4\">\n        </video>\n      </figure>\n\n      <!-- CARD 3 (image) -->\n      <figure class=\"mv-card\">\n        <img loading=\"lazy\" src=\"https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600&auto=format&fit=crop\"\n             alt=\"Side bend stretch\">\n      </figure>\n\n      <!-- CARD 4 (video) -->\n      <figure class=\"mv-card\">\n        <video class=\"mv-video\" playsinline muted loop preload=\"metadata\" poster=\"https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1600&auto=format&fit=crop\">\n          <source src=\"https://cdn.coverr.co/videos/coverr-home-yoga-6119/1080p.mp4\" type=\"video/mp4\">\n        </video>\n      </figure>\n\n      <!-- CARD 5 (image) -->\n      <figure class=\"mv-card\">\n        <img loading=\"lazy\" src=\"https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=1600&auto=format&fit=crop\"\n             alt=\"Floor mobility flow\">\n      </figure>\n    </div>\n\n    <!-- Mobile nav -->\n    <button class=\"mv-nav mv-prev\" aria-label=\"Previous\" data-dir=\"-1\">‹</button>\n    <button class=\"mv-nav mv-next\" aria-label=\"Next\" data-dir=\"1\">›</button>\n  </div>\n</section>\n\n<style>\n  .mv{ --gap:14px; --radius:12px; --ink:#0f0f10; --line:rgba(0,0,0,.08); padding:10px 0; color:var(--ink); }\n  .mv-title{ font-size:clamp(18px,2.6vw,22px); margin:0 0 10px 6px; font-weight:800; letter-spacing:-.01em; }\n\n  .mv-viewport{\n    position:relative;\n  }\n\n  /* Track - mobile = slider */\n  .mv-track{\n    display:flex;\n    gap:var(--gap);\n    overflow-x:auto;\n    scroll-snap-type:x mandatory;\n    -webkit-overflow-scrolling:touch;\n    padding:0 6px;\n  }\n\n  /* Show 2 at a time on mobile */\n  .mv-card{\n    flex:0 0 calc((100% - var(--gap) - 12px)/2); /* minus padding */\n    scroll-snap-align:center;\n    position:relative;\n    border-radius:var(--radius);\n    overflow:hidden;\n    background:#f6f6f6;\n    border:1px solid var(--line);\n    aspect-ratio:16/9;\n  }\n  .mv-card img,\n  .mv-card video{\n    width:100%;\n    height:100%;\n    object-fit:cover;\n    display:block;\n  }\n  .mv-video{ background:#000; }\n\n  /* Mobile arrows */\n  .mv-nav{\n    position:absolute; top:50%; translate:0 -50%;\n    width:36px; height:36px; border-radius:999px;\n    border:1px solid var(--line); background:#fff; color:#111;\n    display:grid; place-items:center; font-size:20px; font-weight:700;\n    box-shadow:0 6px 18px rgba(0,0,0,.08);\n  }\n  .mv-prev{ left:6px; }\n  .mv-next{ right:6px; }\n  @media (hover:hover){\n    .mv-nav:hover{ background:#f8f8f8; }\n  }\n\n  /* Desktop = grid */\n  @media (min-width:900px){\n    .mv-track{\n      overflow:visible;\n      display:grid;\n      grid-template-columns:repeat(5, 1fr);\n      gap:18px;\n      padding:0;\n    }\n    .mv-card{ flex:initial; aspect-ratio:16/9; }\n    .mv-nav{ display:none; }\n  }\n</style>\n\n<script>\n  (function(){\n    const track = document.getElementById('mvTrack');\n    const prev = document.querySelector('.mv-prev');\n    const next = document.querySelector('.mv-next');\n\n    // Pause videos when offscreen; play when onscreen (mobile)\n    const vids = track.querySelectorAll('video');\n    const io = new IntersectionObserver((entries)=>{\n      entries.forEach(e=>{\n        const v = e.target;\n        if(v.tagName !== 'VIDEO') return;\n        if(e.isIntersecting){ v.play().catch(()=>{}); } else { v.pause(); }\n      });\n    }, { root: track, threshold: 0.6 });\n    vids.forEach(v=>io.observe(v));\n\n    // Arrow scroll (scroll by one card)\n    function scrollByCard(dir){\n      const card = track.querySelector('.mv-card');\n      if(!card) return;\n      const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 14);\n      const amount = card.getBoundingClientRect().width + gap;\n      track.scrollBy({ left: dir * amount, behavior: 'smooth' });\n    }\n    prev.addEventListener('click', ()=>scrollByCard(-1));\n    next.addEventListener('click', ()=>scrollByCard(1));\n  })();\n</script>",
+        "text_alignment": "center"
+      }
+    },
+    "newsletter_Atg48j": {
+      "type": "newsletter",
+      "name": "t:sections.newsletter.presets.newsletter.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image_size": "sm",
+        "image": "shopify://shop_images/bg-4.webp",
+        "subheading": "",
+        "title": "Move freely. Live fully.",
+        "content": "<p><strong>Start TODAY!</strong></p>",
+        "button_text": "JOIN THE COMMUNITY",
+        "overlay_color": "#000000",
+        "overlay_opacity": 70
+      }
+    },
     "custom_liquid_jLTM9m": {
       "type": "custom-liquid",
       "name": "t:sections.custom_liquid.presets.custom_liquid.name",
@@ -236,16 +264,52 @@
         "text_alignment": "start"
       }
     },
-    "custom_liquid_BnKDeC": {
-      "type": "custom-liquid",
-      "name": "t:sections.custom_liquid.presets.custom_liquid.name",
+    "faq_KXxrpV": {
+      "type": "faq",
+      "blocks": {
+        "question_P7VHYG": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>Is this really a one-time payment?</strong>",
+            "answer": "<p>Yes! You pay <strong>once </strong>and receive lifetime access. No hidden fees or subscriptions.<br/></p>"
+          }
+        },
+        "question_yNg3cB": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>What devices can I use?</strong>",
+            "answer": "<p>You can access your programs on<strong>any device</strong>— iPhone, Android, tablet, or desktop. No app download needed.</p>"
+          }
+        },
+        "question_mL4rYD": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>What exactly will I get?</strong>",
+            "answer": "<p>You’ll unlock<strong>every KYNX mobility program</strong>, designed to improve flexibility, reduce pain, and boost performance — updated regularly, yours forever.<br/><br/></p>"
+          }
+        },
+        "question_PfneqM": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>How do I get support?</strong>",
+            "answer": "<p>If you have any issues, email us anytime at <a href=\"mailto:HELLO@elastafy.com\">hello@kynxfitness.com</a>. We’re here to help you succeed.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_P7VHYG",
+        "question_yNg3cB",
+        "question_mL4rYD",
+        "question_PfneqM"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
       "settings": {
         "color_scheme": "",
         "separate_section_with_border": true,
-        "remove_vertical_spacing": false,
-        "remove_horizontal_spacing": false,
-        "liquid": "<!-- Programs media rail -->\n<section class=\"mv\">\n  <div class=\"mv-head\">\n  </div>\n\n  <!-- Track (scrolls on mobile, becomes grid on desktop) -->\n  <div class=\"mv-viewport\">\n    <div class=\"mv-track\" id=\"mvTrack\">\n      <!-- CARD 1 (image) -->\n      <figure class=\"mv-card\">\n        <img loading=\"lazy\" src=\"https://images.unsplash.com/photo-1594737625785-c6683fc9b1b2?q=80&w=1600&auto=format&fit=crop\"\n             alt=\"Strength mobility session\">\n      </figure>\n\n      <!-- CARD 2 (video) -->\n      <figure class=\"mv-card\">\n        <video class=\"mv-video\" playsinline muted loop preload=\"metadata\" poster=\"https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=1600&auto=format&fit=crop\">\n          <source src=\"https://cdn.coverr.co/videos/coverr-stretching-in-the-gym-5914/1080p.mp4\" type=\"video/mp4\">\n        </video>\n      </figure>\n\n      <!-- CARD 3 (image) -->\n      <figure class=\"mv-card\">\n        <img loading=\"lazy\" src=\"https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600&auto=format&fit=crop\"\n             alt=\"Side bend stretch\">\n      </figure>\n\n      <!-- CARD 4 (video) -->\n      <figure class=\"mv-card\">\n        <video class=\"mv-video\" playsinline muted loop preload=\"metadata\" poster=\"https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1600&auto=format&fit=crop\">\n          <source src=\"https://cdn.coverr.co/videos/coverr-home-yoga-6119/1080p.mp4\" type=\"video/mp4\">\n        </video>\n      </figure>\n\n      <!-- CARD 5 (image) -->\n      <figure class=\"mv-card\">\n        <img loading=\"lazy\" src=\"https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=1600&auto=format&fit=crop\"\n             alt=\"Floor mobility flow\">\n      </figure>\n    </div>\n\n    <!-- Mobile nav -->\n    <button class=\"mv-nav mv-prev\" aria-label=\"Previous\" data-dir=\"-1\">‹</button>\n    <button class=\"mv-nav mv-next\" aria-label=\"Next\" data-dir=\"1\">›</button>\n  </div>\n</section>\n\n<style>\n  .mv{ --gap:14px; --radius:12px; --ink:#0f0f10; --line:rgba(0,0,0,.08); padding:10px 0; color:var(--ink); }\n  .mv-title{ font-size:clamp(18px,2.6vw,22px); margin:0 0 10px 6px; font-weight:800; letter-spacing:-.01em; }\n\n  .mv-viewport{\n    position:relative;\n  }\n\n  /* Track - mobile = slider */\n  .mv-track{\n    display:flex;\n    gap:var(--gap);\n    overflow-x:auto;\n    scroll-snap-type:x mandatory;\n    -webkit-overflow-scrolling:touch;\n    padding:0 6px;\n  }\n\n  /* Show 2 at a time on mobile */\n  .mv-card{\n    flex:0 0 calc((100% - var(--gap) - 12px)/2); /* minus padding */\n    scroll-snap-align:center;\n    position:relative;\n    border-radius:var(--radius);\n    overflow:hidden;\n    background:#f6f6f6;\n    border:1px solid var(--line);\n    aspect-ratio:16/9;\n  }\n  .mv-card img,\n  .mv-card video{\n    width:100%;\n    height:100%;\n    object-fit:cover;\n    display:block;\n  }\n  .mv-video{ background:#000; }\n\n  /* Mobile arrows */\n  .mv-nav{\n    position:absolute; top:50%; translate:0 -50%;\n    width:36px; height:36px; border-radius:999px;\n    border:1px solid var(--line); background:#fff; color:#111;\n    display:grid; place-items:center; font-size:20px; font-weight:700;\n    box-shadow:0 6px 18px rgba(0,0,0,.08);\n  }\n  .mv-prev{ left:6px; }\n  .mv-next{ right:6px; }\n  @media (hover:hover){\n    .mv-nav:hover{ background:#f8f8f8; }\n  }\n\n  /* Desktop = grid */\n  @media (min-width:900px){\n    .mv-track{\n      overflow:visible;\n      display:grid;\n      grid-template-columns:repeat(5, 1fr);\n      gap:18px;\n      padding:0;\n    }\n    .mv-card{ flex:initial; aspect-ratio:16/9; }\n    .mv-nav{ display:none; }\n  }\n</style>\n\n<script>\n  (function(){\n    const track = document.getElementById('mvTrack');\n    const prev = document.querySelector('.mv-prev');\n    const next = document.querySelector('.mv-next');\n\n    // Pause videos when offscreen; play when onscreen (mobile)\n    const vids = track.querySelectorAll('video');\n    const io = new IntersectionObserver((entries)=>{\n      entries.forEach(e=>{\n        const v = e.target;\n        if(v.tagName !== 'VIDEO') return;\n        if(e.isIntersecting){ v.play().catch(()=>{}); } else { v.pause(); }\n      });\n    }, { root: track, threshold: 0.6 });\n    vids.forEach(v=>io.observe(v));\n\n    // Arrow scroll (scroll by one card)\n    function scrollByCard(dir){\n      const card = track.querySelector('.mv-card');\n      if(!card) return;\n      const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 14);\n      const amount = card.getBoundingClientRect().width + gap;\n      track.scrollBy({ left: dir * amount, behavior: 'smooth' });\n    }\n    prev.addEventListener('click', ()=>scrollByCard(-1));\n    next.addEventListener('click', ()=>scrollByCard(1));\n  })();\n</script>",
-        "text_alignment": "center"
+        "show_categories": false,
+        "subheading": "Need help?",
+        "title": "Frequently Asked Questions",
+        "content": ""
       }
     }
   },
@@ -261,7 +325,9 @@
     "custom_liquid_cgftBg",
     "custom_liquid_fe9hUh",
     "custom_liquid_XfCDda",
+    "custom_liquid_BnKDeC",
+    "newsletter_Atg48j",
     "custom_liquid_jLTM9m",
-    "custom_liquid_BnKDeC"
+    "faq_KXxrpV"
   ]
 }
