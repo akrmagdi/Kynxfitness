@@ -304,7 +304,7 @@
           "type": "question",
           "settings": {
             "question": "<strong>How do I get support?</strong>",
-            "answer": "<p>If you have any issues, email us anytime at <a href=\"mailto:HELLO@elastafy.com\">hello@kynxfitness.com</a>. We’re here to help you succeed.<br/><br/></p>"
+            "answer": "<p>If you have any issues, email us anytime at <a href=\"mailto:hello@kynxfitness.com\">hello@kynxfitness.com</a>. We’re here to help you succeed.<br/><br/></p>"
           }
         }
       },
